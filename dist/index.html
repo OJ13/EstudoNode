@@ -1,0 +1,85 @@
+<h1>
+    Usuários
+</h1>
+
+<label for="nome">Nome</label>
+<input type="text" id="nome">
+<br>
+<br>
+<label for="email">Email</label>
+<input type="text" id="email">
+<br>
+<br>
+<label for="idade">Idade</label>
+<input type="text" id="idade">
+<br>
+<br>
+<label for="senha">Senha</label>
+<input type="text" id="senha">
+<br>
+<br>
+<input type="button" value="Salvar" id="btnSalvar">
+<br><br>
+<hr>
+<div id="dados"></div>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+<script>
+    $('#btnSalvar').click(function(e){
+        e.preventDefault();
+        var obj = {
+            nome: $('#nome').val(),
+            idade: $('#idade').val(),
+            email: $('#email').val(),
+            senha: $('#senha').val()
+        };
+        $.ajax({
+            url: '/api/usuario',
+            method: 'POST',
+            dataType: 'json',
+            data: obj,
+            success: function(){
+                alert('Sucesso!');
+                $(document).ready(function(){
+            $.ajax({
+                url: 'api/usuario',
+                method: 'GET',
+                success: function(res){
+                    var dados = "";
+                    for(var i = 0; i < res.length; i++){
+                        dados += res[i].nome + ' | ' + res[i].idade + ' | ' + res[i].email + '<br/>';
+                    }
+                    $('#dados').html(dados);
+                },
+                error: function(err, xhr){
+                    console.error("Ocorreu um erro => ", err);
+                }
+            });
+        });
+            },
+            error: function(err){
+                console.log('err', err);
+            }
+        });
+    });
+    
+        $(document).ready(function(){
+            $.ajax({
+                url: 'api/usuario',
+                method: 'GET',
+                success: function(res){
+                    var dados = "";
+                    for(var i = 0; i < res.length; i++){
+                        dados += res[i].nome + ' | ' + res[i].idade + ' | ' + res[i].email + '<br/>';
+                    }
+                    $('#dados').html(dados);
+                },
+                error: function(err, xhr){
+                    console.error("Ocorreu um erro => ", err);
+                }
+            });
+        });
+</script>
